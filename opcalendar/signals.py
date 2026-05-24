@@ -4,8 +4,9 @@ from allianceauth.services.hooks import get_extension_logger
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from django.utils import timezone
-from esi.clients import EsiClientProvider
+from esi.openapi_clients import ESIClientProvider as EsiClientProvider
 
+from . import __version__
 from .app_settings import (
     OPCALENDAR_NOTIFY_IMPORTS,
     OPCALENDAR_NOTIFY_REPEAT_EVENTS,
@@ -19,7 +20,12 @@ RED = 16711710
 BLUE = 42751
 GREEN = 6684416
 
-esi = EsiClientProvider()
+esi = EsiClientProvider(
+    compatibility_date="2026-05-19",
+    ua_appname="AaOpcalendar",
+    ua_version=__version__,
+    ua_url="https://github.com/Thrainkrilleve/opcaltemp",
+)
 
 
 def send_webhook(embed, hook, eve_time):
