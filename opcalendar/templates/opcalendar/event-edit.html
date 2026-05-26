@@ -1,6 +1,7 @@
 {% extends 'opcalendar/base.html' %}
 {% load static %}
 {% load i18n %}
+{% load django_bootstrap5 %}
 {% get_current_language as LANGUAGE_CODE %}
 
 {% block page_title %}{% trans "Create Operation" %}{% endblock page_title %}
@@ -14,9 +15,9 @@
       <div class="card-body">
             <form class="form-signin" role="form" action="" method="POST">
                 {% csrf_token %}
-                {{ form|bootstrap }}
+                {% bootstrap_form form %}
                 <br/>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans "Edit Event" %}</button>
+                <button class="btn btn-lg btn-primary w-100" type="submit">{% trans "Edit Event" %}</button>
             </form>
       </div>
 </div>
