@@ -1,5 +1,5 @@
 from calendar import HTMLCalendar
-from datetime import date, datetime
+from datetime import date, datetime, timezone as dt_timezone
 from itertools import chain
 
 from allianceauth.services.hooks import get_extension_logger
@@ -92,7 +92,7 @@ class Calendar(HTMLCalendar):
 
                     # Generate the HTML for the Timer event
                     d += (
-                        f'<div class="event {"past-event" if datetime.now(timezone.utc) > event.date else "future-event"} event-structuretimer">'
+                        f'<div class="event {"past-event" if datetime.now(dt_timezone.utc) > event.date else "future-event"} event-structuretimer">'
                         f'<span id="event-time-{unique_id}">{event.date.strftime("%H:%M")}</span>'
                         f"<span>{event.eve_solar_system.name} - {event.structure_type.name}</span>"
                         f"<span><i> {objective_verbosed} structure timer</i></span>"
@@ -123,7 +123,7 @@ class Calendar(HTMLCalendar):
                         # Generate the HTML for the Extraction event
                         d += (
                             f'<a class="nostyling" href="/moonmining/extraction/{event.id}?new_page=yes">'
-                            f'<div class="event {"past-event" if datetime.now(timezone.utc) > event.chunk_arrival_at else "future-event"} event-moonmining">'
+                            f'<div class="event {"past-event" if datetime.now(dt_timezone.utc) > event.chunk_arrival_at else "future-event"} event-moonmining">'
                             f'<span id="event-time-{unique_id}">{event.chunk_arrival_at.strftime("%H:%M")}</span>'
                             f"<span>{event.refinery.moon.eve_moon.name}</span>"
                             f'<div class="event-moon-details">'

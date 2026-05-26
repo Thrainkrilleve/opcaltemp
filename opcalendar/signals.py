@@ -30,7 +30,7 @@ esi = EsiClientProvider(
 
 def send_webhook(embed, hook, eve_time):
     """Helper function to send the webhook."""
-    old = datetime.datetime.now(timezone.utc) > eve_time
+    old = datetime.datetime.now(datetime.timezone.utc) > eve_time
     if hook and hook.webhook and hook.webhook.enabled:
         if old and hook.ignore_past_fleets:
             logger.debug("Event is in the past, not sending webhook.")

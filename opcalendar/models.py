@@ -1,5 +1,5 @@
 import json
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone as dt_timezone
 from typing import Tuple
 
 import requests
@@ -434,7 +434,7 @@ class Event(models.Model):
 
     @property
     def get_date_status(self):
-        if datetime.now(timezone.utc) > self.start_time:
+        if datetime.now(dt_timezone.utc) > self.start_time:
             return "past-event"
         else:
             return "future-event"
@@ -715,7 +715,7 @@ class IngameEvents(models.Model):
 
     @property
     def get_date_status(self):
-        if datetime.now(timezone.utc) > self.event_start_date:
+        if datetime.now(dt_timezone.utc) > self.event_start_date:
             return "past-event"
         else:
             return "future-event"
