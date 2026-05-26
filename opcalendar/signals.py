@@ -28,14 +28,14 @@ esi = EsiClientProvider(
 )
 
 
-def send_webhook(embed, hook, eve_time):
+def send_webhook(embed, hook, eve_time, content=None):
     """Helper function to send the webhook."""
     old = datetime.datetime.now(datetime.timezone.utc) > eve_time
     if hook and hook.webhook and hook.webhook.enabled:
         if old and hook.ignore_past_fleets:
             logger.debug("Event is in the past, not sending webhook.")
         else:
-            hook.webhook.send_embed(embed)
+            hook.webhook.send_embed(embed, content=content)
 
 
 @receiver(post_save, sender=Event)
@@ -124,7 +124,8 @@ def handle_event_notification(instance, created, col, message_prefix):
                 "text": f"{character_name} {ticker}, {instance.host}",
             },
         }
-        send_webhook(embed, instance.event_visibility, instance.start_time)
+        ping_content = "@here" if instance.ping_here else None
+        send_webhook(embed, instance.event_visibility, instance.start_time, content=ping_content)
     except Exception as e:
         logger.exception(e)
 

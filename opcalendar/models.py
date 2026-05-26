@@ -55,9 +55,12 @@ class WebHook(models.Model):
     )
     enabled = models.BooleanField(default=True, help_text=_("Is the webhook enabled?"))
 
-    def send_embed(self, embed):
+    def send_embed(self, embed, content=None):
         custom_headers = {"Content-Type": "application/json"}
-        data = '{"embeds": [%s]}' % json.dumps(embed)
+        payload = {"embeds": [embed]}
+        if content:
+            payload["content"] = content
+        data = json.dumps(payload)
         r = requests.post(self.webhook_url, headers=custom_headers, data=data)
         r.raise_for_status()
 
@@ -406,6 +409,10 @@ class Event(models.Model):
         User,
         on_delete=models.CASCADE,
         help_text=_("User who created the event"),
+    )
+    ping_here = models.BooleanField(
+        default=False,
+        help_text=_("Ping @here on Discord when this event is posted"),
     )
 
     def duration(self):
